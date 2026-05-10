@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Formulario Mascota</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body>
+<nav class="navbar">
+    <div class="nav-brand">Unidos por los Animales</div>
+    <div class="nav-links"><a th:href="@{/dashboard}">Dashboard</a><a th:href="@{/mascotas}">Mascotas</a><a th:href="@{/logout}" class="btn-logout">Salir</a></div>
+</nav>
+<div class="container">
+    <h1 th:text="${mascota.id == null} ? 'Nueva Mascota' : 'Editar Mascota'"></h1>
+    <form th:action="@{/mascotas/guardar}" th:object="${mascota}" method="post" class="formulario">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-group"><label>Nombre</label><input type="text" th:field="*{nombre}" required></div>
+        <div class="form-group">
+            <label>Especie</label>
+            <select th:field="*{especie}" required>
+                <option value="">Seleccionar...</option>
+                <option value="Perro">Perro</option><option value="Gato">Gato</option>
+                <option value="Conejo">Conejo</option><option value="Ave">Ave</option><option value="Otro">Otro</option>
+            </select>
+        </div>
+        <div class="form-group"><label>Raza</label><input type="text" th:field="*{raza}"></div>
+        <div class="form-group"><label>Edad (anios)</label><input type="number" th:field="*{edad}" min="0" required></div>
+        <div class="form-group"><label>Descripcion</label><textarea th:field="*{descripcion}" rows="3"></textarea></div>
+        <div class="form-group">
+            <label>Estado</label>
+            <select th:field="*{estado}">
+                <option value="DISPONIBLE">DISPONIBLE</option><option value="ADOPTADO">ADOPTADO</option>
+            </select>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/mascotas}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

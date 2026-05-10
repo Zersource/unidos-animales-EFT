@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SolicitudAdopcionController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">unidos-animales</a> &gt; <a href="index.source.html" class="el_package">com.duoc.unidosanimales.controller</a> &gt; <span class="el_source">SolicitudAdopcionController.java</span></div><h1>SolicitudAdopcionController.java</h1><pre class="source lang-java linenums">package com.duoc.unidosanimales.controller;
+
+import com.duoc.unidosanimales.model.Adoptante;
+import com.duoc.unidosanimales.model.Mascota;
+import com.duoc.unidosanimales.model.SolicitudAdopcion;
+import com.duoc.unidosanimales.service.AdoptanteService;
+import com.duoc.unidosanimales.service.MascotaService;
+import com.duoc.unidosanimales.service.SolicitudAdopcionService;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+@Controller
+@RequestMapping(&quot;/solicitudes&quot;)
+public class SolicitudAdopcionController {
+
+    private final SolicitudAdopcionService solicitudService;
+    private final MascotaService mascotaService;
+    private final AdoptanteService adoptanteService;
+
+    public SolicitudAdopcionController(SolicitudAdopcionService solicitudService,
+                                       MascotaService mascotaService,
+<span class="nc" id="L25">                                       AdoptanteService adoptanteService) {</span>
+<span class="nc" id="L26">        this.solicitudService = solicitudService;</span>
+<span class="nc" id="L27">        this.mascotaService = mascotaService;</span>
+<span class="nc" id="L28">        this.adoptanteService = adoptanteService;</span>
+<span class="nc" id="L29">    }</span>
+
+    @GetMapping
+    public String lista(Model model) {
+<span class="nc" id="L33">        model.addAttribute(&quot;solicitudes&quot;, solicitudService.listarTodas());</span>
+<span class="nc" id="L34">        return &quot;solicitudes/lista&quot;;</span>
+    }
+
+    @GetMapping(&quot;/nueva&quot;)
+    public String nueva(Model model) {
+<span class="nc" id="L39">        model.addAttribute(&quot;solicitud&quot;, new SolicitudAdopcion());</span>
+<span class="nc" id="L40">        model.addAttribute(&quot;mascotas&quot;, mascotaService.listarDisponibles());</span>
+<span class="nc" id="L41">        model.addAttribute(&quot;adoptantes&quot;, adoptanteService.listarTodos());</span>
+<span class="nc" id="L42">        return &quot;solicitudes/formulario&quot;;</span>
+    }
+
+    @PostMapping(&quot;/guardar&quot;)
+    public String guardar(@RequestParam Long mascotaId,
+                          @RequestParam Long adoptanteId,
+                          @RequestParam(required = false) String mensaje,
+                          RedirectAttributes flash) {
+<span class="nc" id="L50">        Mascota mascota = mascotaService.buscarPorId(mascotaId)</span>
+<span class="nc" id="L51">                .orElseThrow(() -&gt; new RuntimeException(&quot;Mascota no encontrada&quot;));</span>
+<span class="nc" id="L52">        Adoptante adoptante = adoptanteService.buscarPorId(adoptanteId)</span>
+<span class="nc" id="L53">                .orElseThrow(() -&gt; new RuntimeException(&quot;Adoptante no encontrado&quot;));</span>
+<span class="nc" id="L54">        SolicitudAdopcion solicitud = new SolicitudAdopcion(mascota, adoptante, mensaje);</span>
+<span class="nc" id="L55">        solicitudService.guardar(solicitud);</span>
+<span class="nc" id="L56">        flash.addFlashAttribute(&quot;mensaje&quot;, &quot;Solicitud enviada exitosamente&quot;);</span>
+<span class="nc" id="L57">        return &quot;redirect:/solicitudes&quot;;</span>
+    }
+
+    @GetMapping(&quot;/aprobar/{id}&quot;)
+    public String aprobar(@PathVariable Long id, Authentication auth, RedirectAttributes flash) {
+<span class="nc" id="L62">        solicitudService.aprobar(id, auth.getName());</span>
+<span class="nc" id="L63">        flash.addFlashAttribute(&quot;mensaje&quot;, &quot;Solicitud aprobada&quot;);</span>
+<span class="nc" id="L64">        return &quot;redirect:/solicitudes&quot;;</span>
+    }
+
+    @GetMapping(&quot;/rechazar/{id}&quot;)
+    public String rechazar(@PathVariable Long id, Authentication auth, RedirectAttributes flash) {
+<span class="nc" id="L69">        solicitudService.rechazar(id, auth.getName());</span>
+<span class="nc" id="L70">        flash.addFlashAttribute(&quot;mensaje&quot;, &quot;Solicitud rechazada&quot;);</span>
+<span class="nc" id="L71">        return &quot;redirect:/solicitudes&quot;;</span>
+    }
+
+    @GetMapping(&quot;/eliminar/{id}&quot;)
+    public String eliminar(@PathVariable Long id, RedirectAttributes flash) {
+<span class="nc" id="L76">        solicitudService.eliminar(id);</span>
+<span class="nc" id="L77">        flash.addFlashAttribute(&quot;mensaje&quot;, &quot;Solicitud eliminada&quot;);</span>
+<span class="nc" id="L78">        return &quot;redirect:/solicitudes&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
