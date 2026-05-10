@@ -20,6 +20,9 @@
 
     <properties>
         <java.version>21</java.version>
+        <sonar.organization>zersource</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.projectKey>Zersource_unidos-animales-EFT</sonar.projectKey>
     </properties>
 
     <dependencies>

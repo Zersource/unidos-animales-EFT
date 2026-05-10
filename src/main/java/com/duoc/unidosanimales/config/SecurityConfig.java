@@ -64,6 +64,12 @@ public class SecurityConfig {
                 .permitAll()
             );
 
+      http.headers(headers -> headers
+            .contentSecurityPolicy(csp -> csp
+                .policyDirectives("default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'")
+            )
+        );
+
         return http.build();
     }
 
