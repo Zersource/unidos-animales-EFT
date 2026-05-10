@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.duoc.unidosanimales.service.SolicitudAdopcionServiceTest
--------------------------------------------------------------------------------
-Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.979 s -- in com.duoc.unidosanimales.service.SolicitudAdopcionServiceTest
