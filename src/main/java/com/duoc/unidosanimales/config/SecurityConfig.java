@@ -73,28 +73,28 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("admin123"))
-                .roles("ADMIN", "COORDINADOR", "USUARIO")
-                .build();
+@Bean
+public UserDetailsService userDetailsService() {
+    UserDetails admin = User.builder()
+            .username("admin")
+            .password(passwordEncoder().encode("Admin@Unidos2024!"))
+            .roles("ADMIN", "COORDINADOR", "USUARIO")
+            .build();
 
-        UserDetails coordinador = User.builder()
-                .username("coordinador")
-                .password(passwordEncoder().encode("coord123"))
-                .roles("COORDINADOR", "USUARIO")
-                .build();
+    UserDetails coordinador = User.builder()
+            .username("coordinador")
+            .password(passwordEncoder().encode("Coord@Unidos2024!"))
+            .roles("COORDINADOR", "USUARIO")
+            .build();
 
-        UserDetails usuario = User.builder()
-                .username("usuario")
-                .password(passwordEncoder().encode("user123"))
-                .roles("USUARIO")
-                .build();
+    UserDetails usuario = User.builder()
+            .username("usuario")
+            .password(passwordEncoder().encode("User@Unidos2024!"))
+            .roles("USUARIO")
+            .build();
 
-        return new InMemoryUserDetailsManager(admin, coordinador, usuario);
-    }
+    return new InMemoryUserDetailsManager(admin, coordinador, usuario);
+}
 
     @Bean
     public PasswordEncoder passwordEncoder() {
